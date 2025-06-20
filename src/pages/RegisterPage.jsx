@@ -1,14 +1,12 @@
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Button, TextField, Typography, Alert } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
-import { register } from '../features/auth/authSlice';
 
 export default function RegisterPage() {
     const [formData, setFormData] = useState({ username: '', email: '', password: '' });
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const { status, error } = useSelector((state) => state.auth);
 
     const handleChange = (e) => {
         setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -17,17 +15,16 @@ export default function RegisterPage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await dispatch(register(formData)).unwrap();
-            alert('Registration successful! Please login.');
+            alert('Registration is disabled for dummy API. Use predefined credentials to login.');
             navigate('/');
         } catch (err) {
-            console.log('Registration failed', err);
+            setError('Registration failed');
         }
     };
 
     return (
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 8 }}>
-            <Typography variant="h5">Register</Typography>
+            <Typography variant="h5">Register (Disabled)</Typography>
             <TextField fullWidth label="Username" name="username" value={formData.username} onChange={handleChange} margin="normal" required />
             <TextField fullWidth label="Email" name="email" value={formData.email} onChange={handleChange} margin="normal" required />
             <TextField fullWidth label="Password" type="password" name="password" value={formData.password} onChange={handleChange} margin="normal" required />
@@ -37,5 +34,3 @@ export default function RegisterPage() {
         </Box>
     );
 }
-
-
